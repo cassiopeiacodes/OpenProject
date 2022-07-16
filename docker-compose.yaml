@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    image: openproject/community:${APP_VERSION}
+    container_name: openproject
+    network_mode: 'host'
+    environment:
+      - TZ=${APP_TZ}
+    healthcheck:
+      test: ["CMD", "curl", "-sS", "http://localhost/health_checks | grep", "-c", "PASSED > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./data/pgdata:/var/openproject/pgdata 
+      - ./data/assets:/var/openproject/assets
